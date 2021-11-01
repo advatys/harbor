@@ -7,9 +7,9 @@ metadata:
 
 spec:
   version: {{ .Values.version }}
-  logLevel: info
+  logLevel: {{ .Values.logLevel }}
   harborAdminPasswordRef: {{ .Release.Name }}-admin-core-secret
-  externalURL: https://{{ .Values.coreHostName }}
+  externalURL: https://{{ .Values.core.ingress.hostname }} #{{ .Values.coreHostName }}
   expose:
     core:
       ingress:
@@ -17,38 +17,41 @@ spec:
         controller: default
         annotations:
           kubernetes.io/ingress.class: "{{ .Values.core.ingress.class }}"
+          ingress.kubernetes.io/force-ssl-redirect: "true"
       tls:
         certificateRef: {{ .Release.Name }}-core-tls
 
   internalTLS:
     enabled: false
-  portal: {}
+  portal:
+    serviceAccountName: {{ .Values.serviceAccount }}
   registry:
+    serviceAccountName: {{ .Values.serviceAccount }}
     metrics:
       enabled: true
+  registryctl:
+    serviceAccountName: {{ .Values.serviceAccount }}
+  jobservice:
+    serviceAccountName: {{ .Values.serviceAccount }}
 
   core:
+    serviceAccountName: {{ .Values.serviceAccount }}
     tokenIssuer:
       name: selfsigned-issuer
       kind: Issuer
     metrics:
       enabled: true
-  exporter: {}
+  exporter:
+    serviceAccountName: {{ .Values.serviceAccount }}
 
   # Database configuration
   # https://github.com/goharbor/harbor-operator/blob/master/docs/CRD/custom-resource-definition.md#standard-database
   
   database:
-    kind: PostgreSQL
+    kind: Zlando/PostgreSQL
     spec:
-      postgresql: 
-        username: postgres # Required
-        passwordRef: {{ .Values.postgresql.fullnameOverride }}
-        hosts:
-          - host: {{ .Values.postgresql.fullnameOverride }}
-            port: 5432  
-        sslMode: disable
-
+      zlandoPostgreSql:
+{{ toYaml .Values.postgresql | indent 8 }}
   
   storage:
     kind: FileSystem
@@ -75,6 +78,7 @@ spec:
 
 
   trivy:
+    serviceAccountName: {{ .Values.serviceAccount }}
     skipUpdate: false
     storage:
       cachePersistentVolume:

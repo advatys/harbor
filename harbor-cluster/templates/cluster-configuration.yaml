@@ -1,0 +1,21 @@
+ {{- if .Values.core.oidc.enabled }}
+apiVersion: goharbor.io/v1beta1
+kind: HarborConfiguration
+metadata:
+  name: {{ .Release.Name }}-oidc-configuration
+spec:
+  # your harbor configuration
+  configuration:
+    authMode: oidc_auth 
+    oidcClientSecret: {{ .Release.Name }}-configuration-secret
+    oidcName: "keycloak"
+    oidcEndpoint: {{ .Values.core.oidc.endpoint }}
+    oidcClientId: {{ .Values.core.oidc.clientId }}
+    oidcGroupsClaim: {{ .Values.core.oidc.groupsClaim }}
+    oidcAdminGroup: {{ .Values.core.oidc.adminGroup }}
+    oidcScope: {{ .Values.core.oidc.scope }}
+    #oidcUserClaim: "username"
+    oidcVerifyCert: {{ .Values.core.oidc.verifyCert }}
+    oidcAutoOnboard: false
+  harborClusterRef: {{ .Release.Name }}
+ {{- end }}

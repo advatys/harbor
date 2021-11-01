@@ -1,0 +1,33 @@
+ {{- if .Values.openshift.zalandoOperator.createAdditionalRBAC }}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: postgres-pod-additional
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - endpoints/restricted
+  verbs:
+  - create
+  - delete
+  - deletecollection
+  - get
+  - list
+  - patch
+  - update
+  - watch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ .Release.Name }}-postgres-pod-additional
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: postgres-pod-additional
+subjects:
+- kind: ServiceAccount
+  name: postgres-pod
+  namespace: {{ .Release.Namespace }}
+ {{- end }}

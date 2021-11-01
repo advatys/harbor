@@ -1,7 +1,7 @@
 # Cert issuer
 apiVersion: cert-manager.io/v1
-kind: Issuer
+kind: {{ .Values.core.ingress.issuer.kind }}
 metadata:
-  name: selfsigned-issuer
+  name: {{ .Values.core.ingress.issuer.name }}
 spec:
-  selfSigned: {}
+{{ toYaml .Values.core.ingress.issuer.spec | indent 2 }}
