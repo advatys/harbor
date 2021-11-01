@@ -1,10 +1,10 @@
 operator:
   project: default
   destination:
-    namespace: harbor
+    namespace: harbor-operator
     name: ''
     server: https://kubernetes.default.svc
-  # namespace in which opendistro to be installed in
+
   source:
     path: charts/harbor-operator  
     repoURL: 'https://github.com/goharbor/harbor-operator.git'

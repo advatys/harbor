@@ -1,38 +1,17 @@
+version: 2.3.3
+
 openshift:
   scc:
-    nonroot: false #if you want to add nonroot scc to default sa
-  patchNs:
-    enabled: true #if you want to patch ns to allow uid and fsgroup 10000
+    nonroot: true #if you want to add nonroot scc to default sa
   zalandoOperator:
     createAdditionalRBAC: true
     
 
-external-dns:
-  enabled: true
-  podSecurityContext:
-    fsGroup: null
-    runAsUser: null
-  provider: aws
-  txtOwnerId: Z0465218S9L230WGWNJK
-  domainFilters: 
-    - thadvatys.com
-  txtPrefix: txt
-  aws:
-    zoneType: public
-    credentials:
-      secretName: "aws-config-secret"
-    vault:
-      address: "http://vault.vault.svc.cluster.local:8200"
-      path: kubernetes
-      role: webhook
-      skipVerify: "true"
-      secret:
-        location: secret/data/aws/config #aws secrets in vault
-        credentials: credentials #name of aws credentials's key in vault secret
 
-version: 2.3.3
 logLevel: debug #info
 serviceAccount: harbor
+
+
 
 core:
   ingress:
@@ -96,6 +75,7 @@ redis:
   
 postgresql:
   operatorVersion: "1.7.0"
+  type: zalando
   storage: 1Gi
   replicas: 2
   resources:
