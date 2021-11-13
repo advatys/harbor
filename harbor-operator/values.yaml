@@ -1,0 +1,23 @@
+
+project: default
+destination:
+  namespace: harbor-operator
+  name: ''
+  server: https://kubernetes.default.svc
+
+source:
+  path: charts/harbor-operator  
+  repoURL: 'https://github.com/goharbor/harbor-operator.git'
+  targetRevision: v1.1.1
+  helm:
+    values: |-
+      installCRDs: true
+      podSecurityContext:
+        runAsUser: null
+        runAsNonRoot: true
+
+      leaderElection:
+        namespace: "harbor-operator"
+
+
+

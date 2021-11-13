@@ -1,10 +1,12 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: {{ .Release.Name }}-harbor-operator
+  name: {{ .Release.Name }}-operator
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
 spec:
-  destination: {{ toYaml .Values.operator.destination | nindent 4 }}
-  project: {{ required .Values.operator.project "Required .Values.operator.project" }}
+  destination: {{ toYaml .Values.destination | nindent 4 }}
+  project: {{ .Values.project }}
   syncPolicy: 
   # set automated to null if sync to be manual
     automated: 
@@ -17,7 +19,7 @@ spec:
       - CreateNamespace=true
       - ApplyOutOfSyncOnly=true
   source:
-    path: {{ .Values.operator.sourcePath }}
+    path: {{ .Values.sourcePath }}
     repoURL: '{{ .Values.operator.repoURL }}'
-    targetRevision: {{ .Values.operator.targetRevision }}   
+    targetRevision: {{ .Values.targetRevision }}   
 
