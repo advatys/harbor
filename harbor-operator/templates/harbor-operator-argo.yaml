@@ -18,8 +18,6 @@ spec:
       - Replace=false
       - CreateNamespace=true
       - ApplyOutOfSyncOnly=true
-  source:
-    path: {{ .Values.sourcePath }}
-    repoURL: '{{ .Values.operator.repoURL }}'
-    targetRevision: {{ .Values.targetRevision }}   
+  source: {{ toYaml .Values.source | nindent 4 }}
+
 
