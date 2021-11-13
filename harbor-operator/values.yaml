@@ -15,7 +15,8 @@ source:
       podSecurityContext:
         runAsUser: null
         runAsNonRoot: true
-
+      minio-operator:
+        enabled: false    
       leaderElection:
         namespace: "harbor-operator"
 
