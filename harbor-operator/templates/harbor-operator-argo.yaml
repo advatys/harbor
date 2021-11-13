@@ -5,7 +5,11 @@ metadata:
   finalizers:
   - resources-finalizer.argocd.argoproj.io
 spec:
-  destination: {{ toYaml .Values.destination | nindent 4 }}
+  destination: 
+    namespace: {{ .Values.destination.namespace }}
+    name: '{{ .Values.destination.name }}'
+
+  
   project: {{ .Values.project }}
   syncPolicy: 
   # set automated to null if sync to be manual
@@ -18,6 +22,7 @@ spec:
       - Replace=false
       - CreateNamespace=true
       - ApplyOutOfSyncOnly=true
+  # TODO: this doesn't work when source parameter is partially overriden by the user
   source: {{ toYaml .Values.source | nindent 4 }}
 
 
