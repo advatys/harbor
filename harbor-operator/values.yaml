@@ -11,6 +11,13 @@ source:
   targetRevision: v1.1.1
   helm:
     values: |-
+      resources:
+        limits:
+          cpu: 500m
+          memory: 1Gi
+        requests:
+          cpu: 300m
+          memory: 512Mi
       installCRDs: true
       podSecurityContext:
         runAsUser: null
